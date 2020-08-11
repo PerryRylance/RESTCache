@@ -1,0 +1,52 @@
+[
+    {
+        "name": "perry-rylance/wordpress-plugin",
+        "version": "1.0.1",
+        "version_normalized": "1.0.1.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/PerryRylance/WordPressPlugin.git",
+            "reference": "36a082d0c2dda8a3819ee2c110771e33f9da53ab"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/PerryRylance/WordPressPlugin/zipball/36a082d0c2dda8a3819ee2c110771e33f9da53ab",
+            "reference": "36a082d0c2dda8a3819ee2c110771e33f9da53ab",
+            "shasum": ""
+        },
+        "require": {
+            "php": ">=5.4.0"
+        },
+        "time": "2020-08-04T12:42:08+00:00",
+        "type": "library",
+        "installation-source": "dist",
+        "autoload": {
+            "psr-4": {
+                "PerryRylance\\WordPress\\": [
+                    "src/"
+                ]
+            },
+            "classmap": [
+                "src"
+            ]
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "MIT"
+        ],
+        "authors": [
+            {
+                "name": "Perry Rylance",
+                "email": "contact@perryrylance.com",
+                "homepage": "https://perryrylance.com",
+                "role": "Developer"
+            }
+        ],
+        "description": "A basic boilerplate WordPress plugin, including activation and de-activation hooks, first run, update detection, admin menu and script loading callbacks.",
+        "homepage": "https://perryrylance.com",
+        "keywords": [
+            "boilerplate",
+            "wordpress"
+        ]
+    }
+]

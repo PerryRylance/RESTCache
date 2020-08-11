@@ -1,0 +1,5 @@
+{
+    "require": {
+        "perry-rylance/wordpress-plugin": "^1.0"
+    }
+}
