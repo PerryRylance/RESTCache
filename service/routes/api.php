@@ -4,6 +4,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 use App\Tables\RecordsTable;
+use App\Tables\RulesTable;
 
 /*
 |--------------------------------------------------------------------------
@@ -25,6 +26,13 @@ Route::get('install', function (Request $request) {
 Route::get('records', function (Request $request) {
 	
 	$table = new RecordsTable($request);
+	return $table->getRecords($request);
+	
+});
+
+Route::get('rules', function (Request $request) {
+	
+	$table = new RulesTable($request);
 	return $table->getRecords($request);
 	
 });

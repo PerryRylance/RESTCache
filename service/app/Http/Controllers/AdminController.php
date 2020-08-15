@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Request;
 use Illuminate\Support\Facades\View;
 use PerryRylance\DOMDocument;
 use App\Tables\RecordsTable;
+use App\Tables\RulesTable;
 
 class AdminController extends Controller
 {
@@ -19,6 +20,9 @@ class AdminController extends Controller
 		
 		$table = $document->import(new RecordsTable($request));
 		$document->querySelector("#records")->append($table);
+		
+		$table = $document->import(new RulesTable($request));
+		$document->querySelector("#rules")->append($table);
 		
 		return $document->html;
 		
