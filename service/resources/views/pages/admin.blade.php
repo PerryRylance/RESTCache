@@ -39,6 +39,24 @@
 				</button>
 			</p>
 		</div>
+		
+		<div id="rules">
+			<div class="notice notice-info">
+				<p>
+					<i class="fas fa-info-circle"></i>
+					<strong>Please note</strong> that this plugin will only cache GET requests. The plugin will not cache <em>any</em> requests which have a permission callback, for security reasons.
+				</p>
+			</div>
+		
+			<p id="rule-controls">
+				<button id="add-rule" class="button button-primary">
+					<i class="fas fa-plus"></i>
+					Add Rule
+				</button>
+			</p>
+		</div>
+		
+		
 	</div>
 	
 </div>
