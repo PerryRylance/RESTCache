@@ -15,7 +15,9 @@
         "guzzlehttp/guzzle": "^6.3",
         "jgrossi/corcel": "^4.0",
         "laravel/framework": "^7.22.2",
-        "laravel/tinker": "^2.0"
+        "laravel/tinker": "^2.0",
+        "perry-rylance/datatable": "dev-master",
+        "perry-rylance/dom-document": "dev-master"
     },
     "require-dev": {
         "facade/ignition": "^2.0",

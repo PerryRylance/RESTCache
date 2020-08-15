@@ -14,7 +14,7 @@ Text Domain: rest-cache
 
 namespace PerryRylance\WordPress\RESTCache;
 
-$dir = plugin_dir_path(__FILE__);
+require_once('constants.php');
 
-require_once($dir . "vendor/autoload.php");
-require_once($dir . "includes/class.plugin.php");
+require_once(REST_CACHE_DIR_PATH . "vendor/autoload.php");
+require_once(REST_CACHE_DIR_PATH . "includes/class.plugin.php");
