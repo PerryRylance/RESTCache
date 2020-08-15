@@ -26,6 +26,19 @@
 				</a>
 			</li>
 		</ul>
+		
+		<div id="records">
+			<p id="record-controls">
+				<button id="refresh-table" class="button button-primary">
+					<i class="fas fa-sync"></i>
+					Refresh Table
+				</button>
+				<button id="clear-cache" class="button button-primary">
+					<i class="fas fa-trash-alt"></i>
+					Clear Cache
+				</button>
+			</p>
+		</div>
 	</div>
 	
 </div>
