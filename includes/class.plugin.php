@@ -11,6 +11,8 @@ class Plugin extends Base
 	public function __construct()
 	{
 		Base::__construct();
+		
+		add_action('init', array($this, 'onInit'));
 	}
 	
 	public function getPluginSlug()
@@ -25,7 +27,13 @@ class Plugin extends Base
 	
 	public function isAdminPage()
 	{
-		return $_GET['page'] == 'rest-cache';
+		return isset($_GET['page']) && $_GET['page'] == 'rest-cache';
+	}
+	
+	public function onInit()
+	{
+		if($this->isAdminPage())
+			$this->setAuthCookie();
 	}
 	
 	public function onAdminMenu()
@@ -67,6 +75,29 @@ class Plugin extends Base
 		);
 		
 		wp_enqueue_script('rest-cache-admin', REST_CACHE_DIR_URL . 'js/admin.js', array('jquery-ui-tabs'));
+	}
+	
+	private function setAuthCookie()
+	{
+		$user		= get_current_user_id();
+		$salt		= bin2hex( openssl_random_pseudo_bytes(64) );
+		$key		= bin2hex( openssl_random_pseudo_bytes(64) );
+		$hash		= hash('sha256', $salt . $key);
+		
+		update_user_meta(
+			get_current_user_id(),
+			'rest-cache-admin-salt',
+			$salt
+		);
+		
+		update_user_meta(
+			get_current_user_id(),
+			'rest-cache-admin-hash',
+			$hash
+		);
+		
+		setcookie("rest-cache-admin-key", $key, time() + 60 * 60 * 24, "/");
+		$_COOKIE["rest-cache-admin-key"] = $key;
 	}
 	
 	private function getTranslatedScriptURL($file)
