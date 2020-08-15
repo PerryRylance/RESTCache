@@ -13,7 +13,7 @@ class RecordsTable extends DataTable
 	
 	public function getTableName()
 	{
-		return "wp_posts";
+		return "rest_cache_records";
 	}
 	
 	public function getRoute()
