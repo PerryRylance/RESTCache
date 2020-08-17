@@ -16,7 +16,7 @@ class CreateRulesTable extends Migration
         Schema::create('rest_cache_rules', function (Blueprint $table) {
             $table->id();
 			$table->enum("behaviour", ["exclude", "include"])->default("exclude");
-			$table->string("pattern", 2048);
+			$table->string("pattern", 2048)->default("/");
 			$table->tinyInteger("regex")->default(0);
 			$table->integer("priority")->default(10);
         });
