@@ -3,16 +3,29 @@
 namespace PerryRylance\WordPress\RESTCache;
 
 use PerryRylance\WordPress\Plugin as Base;
+use PerryRylance\WordPress\JsonOption;
 use PerryRylance\DataTable;
 use App\Tables\RecordsTable;
 
 class Plugin extends Base
 {
+	private $_settings;
+	
 	public function __construct()
 	{
 		Base::__construct();
 		
 		add_action('init', array($this, 'onInit'));
+	}
+	
+	public function __get($name)
+	{
+		switch($name)
+		{
+			case "settings":
+				return $this->{"_$name"};
+				break;
+		}
 	}
 	
 	public function getPluginSlug()
@@ -32,8 +45,12 @@ class Plugin extends Base
 	
 	public function onInit()
 	{
-		if($this->isAdminPage())
-			$this->setAuthCookie();
+		if(!$this->isAdminPage())
+			return;
+		
+		$this->settings = new JsonOption("rest-cache-settings");
+		
+		$this->setAuthCookie();
 	}
 	
 	public function onAdminMenu()

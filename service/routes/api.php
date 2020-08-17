@@ -19,7 +19,28 @@ use App\Tables\RulesTable;
 
 Route::get('install', function (Request $request) {
 	
+	global $prefix;
+	
 	Artisan::call('migrate');
+	
+	function put_permanent_env($key, $value)
+    {
+        $path = app()->environmentFilePath();
+
+        $escaped = preg_quote('='.env($key), '/');
+
+        file_put_contents($path, preg_replace(
+            "/^{$key}{$escaped}/m",
+           "{$key}={$value}",
+           file_get_contents($path)
+        ));
+    }
+	
+	put_permanent_env('DB_HOST', DB_HOST);
+	put_permanent_env('DB_DATABASE', DB_NAME);
+	put_permanent_env('DB_USERNAME', DB_USER);
+	put_permanent_env('DB_PASSWORD', DB_PASSWORD);
+	put_permanent_env('DB_PREFIX', $table_prefix);
 	
 });
 
