@@ -21,6 +21,7 @@ class ComposerStaticInit45deff180041b2e0be98e8fd92d7c68d
     );
 
     public static $classMap = array (
+        'PerryRylance\\WordPress\\JsonOption' => __DIR__ . '/..' . '/perry-rylance/wordpress-plugin/src/class.json-option.php',
         'PerryRylance\\WordPress\\Plugin' => __DIR__ . '/..' . '/perry-rylance/wordpress-plugin/src/class.plugin.php',
     );
 

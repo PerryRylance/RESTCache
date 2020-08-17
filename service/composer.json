@@ -16,6 +16,7 @@
         "jgrossi/corcel": "^4.0",
         "laravel/framework": "^7.22.2",
         "laravel/tinker": "^2.0",
+        "laravel/ui": "^2.1",
         "perry-rylance/datatable": "dev-master",
         "perry-rylance/dom-document": "dev-master"
     },

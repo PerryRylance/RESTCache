@@ -13,4 +13,5 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', "AdminController@getPage");
+Route::get('/', "AdminController@view");
+Route::post('/', "AdminController@store");

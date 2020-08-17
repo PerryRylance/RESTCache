@@ -5,6 +5,16 @@
 		REST Cache
 	</h1>
 	
+	@if ($errors->any())
+		<div class="notice notice-error">
+			<ul>
+				@foreach ($errors->all() as $error)
+					<li>{{ $error }}</li>
+				@endforeach
+			</ul>
+		</div>
+	@endif
+	
 	<div id="rest-cache-tabs">
 		<ul>
 			<li>
@@ -56,6 +66,57 @@
 			</p>
 		</div>
 		
+		<div id="settings">
+		
+			<form method="POST">
+			
+				@csrf
+			
+				<fieldset>
+					<legend>
+						Record Expiry
+					</legend>
+					
+					<input name="record-expiry-interval-amount" type="number" min="1" step="1" value="1"/>
+					<select name="record-expiry-interval-type">
+						<option value="SECOND">
+							second(s)
+						</option>
+						
+						<option value="MINUTE">
+							month(s)
+						</option>
+						
+						<option value="HOUR">
+							hour(s)
+						</option>
+						
+						<option value="DAY" selected="selected">
+							day(s)
+						</option>
+						
+						<option value="MONTH">
+							month(s)
+						</option>
+						
+						<option value="YEAR">
+							year(s)
+						</option>
+					</select>
+					
+					<label>
+						after the record is created
+					</label>
+				</fieldset>
+				
+				<button type="submit" class="button button-primary">
+					<i class="fas fa-save"></i>
+					Save Settings
+				</button>
+		
+			</form>
+			
+		</div>
 		
 	</div>
 	
