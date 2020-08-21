@@ -1,18 +1,9 @@
 jQuery(function($) {
-	
-	$("#rest-cache-tabs").tabs();
-	
-	$("button#add-rule").on("click", function(event) {
+	/*
+	$("#rules").on("click", "[data-edit-rule-id]", function(event) {
 		
-		var url = $("#rules [data-route]").attr("data-route");
-		
-		$.ajax(url, {
-			method: "POST",
-			success: function(response, status, xhr) {
-				$("#rules table").DataTable().ajax.reload();
-			}
-		});
+		var url = $("#rules [data-route]").attr("data-route") + "/" + $(event.currentTarget).attr("data-delete-rule-id");
 		
 	});
-	
+	*/
 });

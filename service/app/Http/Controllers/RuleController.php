@@ -21,4 +21,24 @@ class RuleController extends Controller
 		
 		return $rule;
 	}
+	
+	public function update(Request $request, $id)
+	{
+		$rule = Rule::find($id);
+		
+		foreach($request->input() as $key => $value)
+			$rule->{$key} = $value;
+		
+		$rule->save();
+		
+		return $rule;
+	}
+	
+	public function destroy(Request $request, $id)
+	{
+		$rule = Rule::find($id);
+		$rule->delete();
+		
+		return true;
+	}
 }

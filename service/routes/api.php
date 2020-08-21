@@ -51,4 +51,6 @@ Route::get('records', function (Request $request) {
 	
 });
 
-Route::resource('rules', 'RuleController');
+Route::resource('rules', 'RuleController')->only([
+	'index', 'store', 'update', 'destroy'
+]);

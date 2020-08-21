@@ -25,10 +25,20 @@ class RulesTable extends DataTable
 			'type'		=> 'text',
 			'sql'		=> DB::raw('
 				REPLACE(CONCAT(\'
-						<div class="codecabin-rest-cache-action-buttons">
+						<div class="rest-cache-action-buttons">
+							<button class="button button-secondary"
+								title="Edit"
+								data-action="edit">
+								<i class="fas fa-pen-square"></i>
+							</button>
+							<button class="button button-secondary"
+								title="Update"
+								data-action="update">
+								<i class="fas fa-save"></i>
+							</button>
 							<button class="button button-secondary"
 								title="Remove" 
-								data-delete-rule-id="' . $id_placeholder . '">
+								data-action="delete">
 								<i class="fas fa-trash-alt"></i>
 							</button>
 						</div>
