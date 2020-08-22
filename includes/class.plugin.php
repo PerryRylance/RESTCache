@@ -91,7 +91,11 @@ class Plugin extends Base
 			array('datatables')
 		);
 		
-		wp_enqueue_script('rest-cache-admin', REST_CACHE_DIR_URL . 'js/admin.js', array('jquery-ui-tabs'));
+		wp_enqueue_style('fontawesome5', REST_CACHE_DIR_URL . "lib/fontawesome/css/all.css");
+		
+		wp_enqueue_style('rest-cache-admin', REST_CACHE_DIR_URL . 'css/admin.css');
+		
+		wp_enqueue_script('rest-cache-admin', REST_CACHE_DIR_URL . 'js/dist/main.js', array('jquery-ui-tabs'));
 	}
 	
 	private function setAuthCookie()

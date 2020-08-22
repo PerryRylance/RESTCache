@@ -51,9 +51,6 @@ Route::get('records', function (Request $request) {
 	
 });
 
-Route::get('rules', function (Request $request) {
-	
-	$table = new RulesTable($request);
-	return $table->getRecords($request);
-	
-});
+Route::resource('rules', 'RuleController')->only([
+	'index', 'store', 'update', 'destroy'
+]);
