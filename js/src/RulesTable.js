@@ -1,36 +1,48 @@
-// requires: Table.js
+require('./Table');
+
+class RulesTable extends RESTCache.Table
+{
+	constructor(element)
+	{
+		super(element);
+	}
+	
+	getControlFromField(field)
+	{
+		switch(field)
+		{
+			case "regex":
+			
+				var $input = super.getControlFromField(field);
+				$input.attr("type", "checkbox");
+				$input.attr("checked", $input.val() == 1);
+				$input.val("on");
+				return $input;
+				
+				break;
+			
+			case "behaviour":
+			
+				var $select = $("<select name='behaviour'>\
+					<option value=''></option>\
+					<option value=''></option>\
+				</select>");
+			
+				break;
+			
+			case "priority":	
+				
+				break;
+		}
+		
+		return super.getControlFromField(field);
+	}
+}
 
 jQuery(function($) {
 	
-	RESTCache.RulesTable = function(element)
-	{
-		var self = this;
-		
-		RESTCache.Table.call(this, element);
-		
-		$("button#add-rule").on("click", function(event) {
-			self.onAddRule(event);
-		});
-	}
-	
-	RESTCache.extend(RESTCache.RulesTable, RESTCache.Table);
-	
-	RESTCache.RulesTable.prototype.onAddRule = function(event)
-	{
-		var self = this;
-		
-		$.ajax(this.url, {
-			method: "POST",
-			success: function(response, status, xhr) {
-				self.$element.DataTable().ajax.reload();
-			}
-		});
-	}
-	
-	$(window).on("load", function(event) {
-		
-		RESTCache.rulesTable = new RESTCache.RulesTable($("#rules table[data-route]"));
-		
-	});
+	RESTCache.rulesTable = new RulesTable($("#rules table"));
 	
 });
+
+export {RulesTable};

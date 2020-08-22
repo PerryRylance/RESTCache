@@ -1,8 +1,6 @@
-// requires: core.js
-
-jQuery(function($) {
-	
-	RESTCache.Table = function(element)
+class Table
+{
+	constructor(element)
 	{
 		var self = this;
 		
@@ -10,42 +8,34 @@ jQuery(function($) {
 		
 		this.url = this.$element.attr("data-route");
 		
-		this.$element.on("click", "[data-action='edit']", function(event) {
-			self.onEdit(event);
-		});
-		
-		this.$element.on("click", "[data-action='update']", function(event) {
-			self.onUpdate(event);
-		});
-		
-		this.$element.on("click", "[data-action='delete']", function(event) {
-			self.onDelete(event);
-		});
+		this.$element.on("click", "[data-action='edit']", event => this.onEdit(event));
+		this.$element.on("click", "[data-action='update']", event => this.onUpdate(event));
+		this.$element.on("click", "[data-action='delete']", event => this.onDelete(event));
 	}
 	
-	RESTCache.Table.prototype.getIDFromEvent = function(event)
+	getIDFromEvent(event)
 	{
-		var $tr = $(event.currentTarget).closest("tr");
-		var id = $tr.attr("data-id");
+		let $tr = $(event.currentTarget).closest("tr");
+		let id = $tr.attr("data-id");
 		
 		return id;
 	}
 	
-	RESTCache.Table.prototype.getControlFromField = function(field)
+	getControlFromField(field)
 	{
-		var $input = $("<input/>");
+		let $input = $("<input/>");
 		$input.attr("name", field);
 		return $input;
 	}
 	
-	RESTCache.Table.prototype.setItemEditable = function(id)
+	setItemEditable(id)
 	{
-		var self = this;
-		var $tr = this.$element.find("tr[data-id='" + id + "']");
+		let self = this;
+		let $tr = this.$element.find("tr[data-id='" + id + "']");
 		
 		$tr.children("td").each(function(index, td) {
 			
-			var field = $(td).attr("data-field");
+			let field = $(td).attr("data-field");
 			
 			switch(field)
 			{
@@ -55,7 +45,7 @@ jQuery(function($) {
 					break;
 			}
 
-			var $input = self.getControlFromField(field);
+			let $input = self.getControlFromField(field);
 			
 			$input.val($(td).text());
 			
@@ -67,18 +57,18 @@ jQuery(function($) {
 		$tr.addClass("rest-cache-editing");
 	}
 	
-	RESTCache.Table.prototype.onEdit = function(event)
+	onEdit(event)
 	{
-		var id = this.getIDFromEvent(event);
+		let id = this.getIDFromEvent(event);
 		this.setItemEditable(id);
 	}
 	
-	RESTCache.Table.prototype.onUpdate = function(event)
+	onUpdate(event)
 	{
-		var self	= this;
-		var id		= this.getIDFromEvent(event);
-		var data	= {};
-		var $tr		= $(event.currentTarget).closest("tr");
+		let self	= this;
+		let id		= this.getIDFromEvent(event);
+		let data	= {};
+		let $tr		= $(event.currentTarget).closest("tr");
 		
 		$tr.find(":input").each(function(index, el) {
 			
@@ -98,10 +88,10 @@ jQuery(function($) {
 		});
 	}
 	
-	RESTCache.Table.prototype.onDelete = function(event)
+	onDelete(event)
 	{
-		var self	= this;
-		var id		= this.getIDFromEvent(event);
+		let self	= this;
+		let id		= this.getIDFromEvent(event);
 		
 		$.ajax(this.url + "/" + id, {
 			method: "DELETE",
@@ -111,9 +101,11 @@ jQuery(function($) {
 		});
 	}
 	
-	RESTCache.Table.prototype.onActionComplete = function(event)
+	onActionComplete(event)
 	{
 		this.$element.DataTable().ajax.reload();
 	}
-	
-});
+}
+
+RESTCache.Table = Table;
+export {Table};
