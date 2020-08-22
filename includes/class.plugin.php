@@ -95,7 +95,8 @@ class Plugin extends Base
 		
 		wp_enqueue_style('rest-cache-admin', REST_CACHE_DIR_URL . 'css/admin.css');
 		
-		wp_enqueue_script('rest-cache-admin', REST_CACHE_DIR_URL . 'js/dist/main.js', array('jquery-ui-tabs'));
+		// wp_enqueue_script('rest-cache-admin', REST_CACHE_DIR_URL . 'js/dist/main.js', array('jquery-ui-tabs'));
+		wp_enqueue_script('rest-cache-admin', REST_CACHE_DIR_URL . 'js/dist/entry.js', array('jquery-ui-tabs'));
 	}
 	
 	private function setAuthCookie()
