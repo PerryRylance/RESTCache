@@ -10,7 +10,7 @@ class RuleController extends TableController
 {
 	protected function getModelClass()
 	{
-		return Rule;
+		return "\\App\\Models\\Rule";
 	}
 	
 	public function index(Request $request)

@@ -1,4 +1,4 @@
-class Table
+export default class Table
 {
 	constructor(element)
 	{
@@ -106,6 +106,3 @@ class Table
 		this.$element.DataTable().ajax.reload();
 	}
 }
-
-RESTCache.Table = Table;
-export {Table};

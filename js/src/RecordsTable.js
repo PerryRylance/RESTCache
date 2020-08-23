@@ -1,14 +1,6 @@
-require('./Table');
+import Table from "./Table";
 
-class RecordsTable extends RESTCache.Table
+export default class RecordsTable extends Table
 {
 	
 }
-
-jQuery(function($) {
-	
-	RESTCache.recordsTable = new RecordsTable($("#records table"));
-	
-});
-
-export {RecordsTable};

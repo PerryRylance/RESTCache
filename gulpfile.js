@@ -10,6 +10,7 @@ var sourcemaps = require('gulp-sourcemaps');
 var babel = require('gulp-babel');
 var babelify = require('babelify');
 var log = require('gulplog');
+var inject = require('gulp-inject-string');
 
 const paths = {
 	src:	"./js/src/**/*.js"
@@ -33,6 +34,8 @@ function js() {
 		// Add transformation tasks to the pipeline here.
 		// .pipe(uglify())
 		.on('error', log.error)
+		.pipe(inject.prepend("jQuery(function($) {"))
+		.pipe(inject.append("});"))
 		.pipe(sourcemaps.write('./'))
 		.pipe(gulp.dest('./js/dist/'));
 }

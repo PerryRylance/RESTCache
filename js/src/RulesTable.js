@@ -1,6 +1,6 @@
-require('./Table');
-
-class RulesTable extends RESTCache.Table
+import Table from "./Table";
+ 
+export default class RulesTable extends Table
 {
 	constructor(element)
 	{
@@ -14,9 +14,11 @@ class RulesTable extends RESTCache.Table
 			case "regex":
 			
 				var $input = super.getControlFromField(field);
+				
 				$input.attr("type", "checkbox");
 				$input.attr("checked", $input.val() == 1);
 				$input.val("on");
+				
 				return $input;
 				
 				break;
@@ -24,13 +26,21 @@ class RulesTable extends RESTCache.Table
 			case "behaviour":
 			
 				var $select = $("<select name='behaviour'>\
-					<option value=''></option>\
-					<option value=''></option>\
+					<option value='exclude'>Exclude</option>\
+					<option value='include'>Include</option>\
 				</select>");
+				
+				return $select;
 			
 				break;
 			
-			case "priority":	
+			case "priority":
+				
+				var $input = super.getControlFromField(field);
+				
+				$input.attr("type", "number");
+				
+				return $input;
 				
 				break;
 		}
@@ -38,11 +48,3 @@ class RulesTable extends RESTCache.Table
 		return super.getControlFromField(field);
 	}
 }
-
-jQuery(function($) {
-	
-	RESTCache.rulesTable = new RulesTable($("#rules table"));
-	
-});
-
-export {RulesTable};
