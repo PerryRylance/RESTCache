@@ -8,6 +8,9 @@ use PerryRylance\DataTable;
 use App\Tables\RecordsTable;
 
 require_once(REST_CACHE_DIR_PATH . 'includes/class.rewrite-rule.php');
+require_once(REST_CACHE_DIR_PATH . 'includes/class.file-cache.php');
+require_once(REST_CACHE_DIR_PATH . 'includes/class.file-server.php');
+require_once(REST_CACHE_DIR_PATH . 'includes/class.file-storer.php');
 
 class Plugin extends Base
 {
@@ -19,6 +22,7 @@ class Plugin extends Base
 		Base::__construct();
 		
 		$this->_rewriteRule = new RewriteRule();
+		$this->_fileStorer = new FileStorer();
 		
 		add_action('init', array($this, 'onInit'));
 		
@@ -166,14 +170,16 @@ class Plugin extends Base
 		<?php
 	}
 	
-	public function onRESTPostDispatch($result, $server, $request)
+	public function onRESTPostDispatch(\WP_REST_Response $result, \WP_REST_Server $server, \WP_REST_Request $request)
 	{
+		if(defined('WP_DEBUG') && function_exists('xdebug_disable'))
+			xdebug_disable();
+		
 		$fileStorer = new FileStorer();
 		
 		if($fileStorer->isStoringRequest($request))
 			$fileStorer->store($result);
 		
-		// $this->cache->store($result, $request);
 		return $result;
 	}
 }
