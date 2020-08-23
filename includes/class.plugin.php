@@ -7,13 +7,18 @@ use PerryRylance\WordPress\JsonOption;
 use PerryRylance\DataTable;
 use App\Tables\RecordsTable;
 
+require_once(REST_CACHE_DIR_PATH . 'includes/class.rewrite-rule.php');
+
 class Plugin extends Base
 {
 	private $_settings;
+	private $_rewriteRule;
 	
 	public function __construct()
 	{
 		Base::__construct();
+		
+		$this->_rewriteRule = new RewriteRule();
 		
 		add_action('init', array($this, 'onInit'));
 	}
@@ -129,6 +134,11 @@ class Plugin extends Base
 		$url		= plugin_dir_url($file) . $basename;
 		
 		return plugin_dir_url($file) . $basename;
+	}
+	
+	public function onDeactivate()
+	{
+		$this->_rewriteRule->remove();
 	}
 }
 
