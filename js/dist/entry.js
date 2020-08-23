@@ -1,10 +1,43 @@
-(function(){function r(e,n,t){function o(i,f){if(!n[i]){if(!e[i]){var c="function"==typeof require&&require;if(!f&&c)return c(i,!0);if(u)return u(i,!0);var a=new Error("Cannot find module '"+i+"'");throw a.code="MODULE_NOT_FOUND",a}var p=n[i]={exports:{}};e[i][0].call(p.exports,function(r){var n=e[i][1][r];return o(n||r)},p,p.exports,r,e,n,t)}return n[i].exports}for(var u="function"==typeof require&&require,i=0;i<t.length;i++)o(t[i]);return o}return r})()({1:[function(require,module,exports){
+jQuery(function($) {(function(){function r(e,n,t){function o(i,f){if(!n[i]){if(!e[i]){var c="function"==typeof require&&require;if(!f&&c)return c(i,!0);if(u)return u(i,!0);var a=new Error("Cannot find module '"+i+"'");throw a.code="MODULE_NOT_FOUND",a}var p=n[i]={exports:{}};e[i][0].call(p.exports,function(r){var n=e[i][1][r];return o(n||r)},p,p.exports,r,e,n,t)}return n[i].exports}for(var u="function"==typeof require&&require,i=0;i<t.length;i++)o(t[i]);return o}return r})()({1:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.RecordsTable = void 0;
+exports["default"] = void 0;
+
+var _RulesTable = _interopRequireDefault(require("./RulesTable"));
+
+var _RecordsTable = _interopRequireDefault(require("./RecordsTable"));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var Admin = function Admin() {
+  _classCallCheck(this, Admin);
+
+  this.rulesTable = new _RulesTable["default"]($("#rules table"));
+  this.recordsTable = new _RecordsTable["default"]($("#records table"));
+  $("#rest-cache-tabs").tabs();
+};
+
+exports["default"] = Admin;
+window.RESTCache = {
+  admin: new Admin()
+};
+
+},{"./RecordsTable":2,"./RulesTable":3}],2:[function(require,module,exports){
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports["default"] = void 0;
+
+var _Table2 = _interopRequireDefault(require("./Table"));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
 function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
@@ -24,10 +57,8 @@ function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Re
 
 function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
 
-require('./Table');
-
-var RecordsTable = /*#__PURE__*/function (_RESTCache$Table) {
-  _inherits(RecordsTable, _RESTCache$Table);
+var RecordsTable = /*#__PURE__*/function (_Table) {
+  _inherits(RecordsTable, _Table);
 
   var _super = _createSuper(RecordsTable);
 
@@ -38,20 +69,21 @@ var RecordsTable = /*#__PURE__*/function (_RESTCache$Table) {
   }
 
   return RecordsTable;
-}(RESTCache.Table);
+}(_Table2["default"]);
 
-exports.RecordsTable = RecordsTable;
-jQuery(function ($) {
-  RESTCache.recordsTable = new RecordsTable($("#records table"));
-});
+exports["default"] = RecordsTable;
 
-},{"./Table":3}],2:[function(require,module,exports){
+},{"./Table":4}],3:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.RulesTable = void 0;
+exports["default"] = void 0;
+
+var _Table2 = _interopRequireDefault(require("./Table"));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
 function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
@@ -79,10 +111,8 @@ function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Re
 
 function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
 
-require('./Table');
-
-var RulesTable = /*#__PURE__*/function (_RESTCache$Table) {
-  _inherits(RulesTable, _RESTCache$Table);
+var RulesTable = /*#__PURE__*/function (_Table) {
+  _inherits(RulesTable, _Table);
 
   var _super = _createSuper(RulesTable);
 
@@ -107,12 +137,17 @@ var RulesTable = /*#__PURE__*/function (_RESTCache$Table) {
 
         case "behaviour":
           var $select = $("<select name='behaviour'>\
-					<option value=''></option>\
-					<option value=''></option>\
+					<option value='exclude'>Exclude</option>\
+					<option value='include'>Include</option>\
 				</select>");
+          return $select;
           break;
 
         case "priority":
+          var $input = _get(_getPrototypeOf(RulesTable.prototype), "getControlFromField", this).call(this, field);
+
+          $input.attr("type", "number");
+          return $input;
           break;
       }
 
@@ -121,20 +156,17 @@ var RulesTable = /*#__PURE__*/function (_RESTCache$Table) {
   }]);
 
   return RulesTable;
-}(RESTCache.Table);
+}(_Table2["default"]);
 
-exports.RulesTable = RulesTable;
-jQuery(function ($) {
-  RESTCache.rulesTable = new RulesTable($("#rules table"));
-});
+exports["default"] = RulesTable;
 
-},{"./Table":3}],3:[function(require,module,exports){
+},{"./Table":4}],4:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.Table = void 0;
+exports["default"] = void 0;
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -245,23 +277,13 @@ var Table = /*#__PURE__*/function () {
   return Table;
 }();
 
-exports.Table = Table;
-RESTCache.Table = Table;
+exports["default"] = Table;
 
-},{}],4:[function(require,module,exports){
+},{}],5:[function(require,module,exports){
 "use strict";
 
-window.$ = jQuery;
-window.RESTCache = {};
+require('./Admin');
 
-require('./RulesTable');
+},{"./Admin":1}]},{},[5])
 
-require('./RecordsTable');
-
-jQuery(function ($) {
-  $("#rest-cache-tabs").tabs();
-});
-
-},{"./RecordsTable":1,"./RulesTable":2}]},{},[4])
-
-//# sourceMappingURL=entry.js.map
+});//# sourceMappingURL=entry.js.map

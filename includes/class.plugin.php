@@ -72,7 +72,8 @@ class Plugin extends Base
 		wp_enqueue_script('jquery-ui');
 		wp_enqueue_script('jquery-ui-tabs');
 		
-		wp_enqueue_style('jquery-ui-smoothness', REST_CACHE_DIR_URL . 'lib/jquery-ui.css');
+		wp_enqueue_style('jquery-ui', REST_CACHE_DIR_URL . 'lib/jquery-ui.css');
+		wp_enqueue_style('jquery-ui-redmond', REST_CACHE_DIR_URL . 'lib/theme.css');
 		
 		wp_enqueue_script(
 			'datatables', 
