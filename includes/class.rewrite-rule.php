@@ -41,16 +41,23 @@ class RewriteRule
 			return;
 		
 		$guid		= RewriteRule::GUID;
-		$shim		= REST_CACHE_DIR_PATH . 'shim.php';
+		$path		= substr(REST_CACHE_DIR_PATH, strlen($_SERVER['DOCUMENT_ROOT']));
+		$shim		= "/" . trailingslashit($path) . "shim.php";
+		
+		// NB: Fix for Windows path \ making redirect rule ineffective
+		if(defined('PHP_OS') && if (strtoupper(substr(PHP_OS, 0, 3)) === 'WIN'))
+			$shim	= str_replace('\\', '/', $shim);
+		
 		$block		= "# BEGIN rest-cache-$guid
 <IfModule mod_rewrite.c>
 RewriteEngine On
 RewriteBase /
 RewriteCond %{REQUEST_METHOD} ^GET [NC]
 RewriteCond %{QUERY_STRING} !skip_cache
-RewriteRule ^wp-json /wp-content/plugins/codecabin-rest-cache/shim.php [L]
+RewriteRule ^wp-json $shim [L]
 </IfModule>
 # END rest-cache-$guid";
+		
 		$htaccess	= file_get_contents($this->htaccessFilename);
 		$htaccess	= $block . "\r\n\r\n" . $htaccess;
 		
