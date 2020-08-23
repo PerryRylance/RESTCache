@@ -7,15 +7,25 @@ use PerryRylance\WordPress\JsonOption;
 use PerryRylance\DataTable;
 use App\Tables\RecordsTable;
 
+require_once(REST_CACHE_DIR_PATH . 'includes/class.rewrite-rule.php');
+
 class Plugin extends Base
 {
 	private $_settings;
+	private $_rewriteRule;
 	
 	public function __construct()
 	{
 		Base::__construct();
 		
+		$this->_rewriteRule = new RewriteRule();
+		
 		add_action('init', array($this, 'onInit'));
+		
+		if(!$this->_rewriteRule->isPresent())
+			add_action('admin_notices', array($this, 'onRewriteRuleNotice'));
+		else
+			add_filter('rest_post_dispatch', array($this, 'onRESTPostDispatch'), 10, 3);
 	}
 	
 	public function __get($name)
@@ -129,6 +139,42 @@ class Plugin extends Base
 		$url		= plugin_dir_url($file) . $basename;
 		
 		return plugin_dir_url($file) . $basename;
+	}
+	
+	public function onDeactivate()
+	{
+		$this->_rewriteRule->remove();
+	}
+	
+	public function onRewriteRuleNotice()
+	{
+		?>
+		<div class="notice notice-error">
+			<p>
+				<i class="fas fa-hand-paper"></i>
+			
+				<strong>
+					<?php
+					_e('REST Cache:', 'rest-cache');
+					?>
+				</strong>
+				<?php
+				_e('We couldn\'t find the REST Cache redirect rules in your .htaccess file. Please try de-activating and re-activating the plugin', 'rest-cache');
+				?>
+			</p>
+		</div>
+		<?php
+	}
+	
+	public function onRESTPostDispatch($result, $server, $request)
+	{
+		$fileStorer = new FileStorer();
+		
+		if($fileStorer->isStoringRequest($request))
+			$fileStorer->store($result);
+		
+		// $this->cache->store($result, $request);
+		return $result;
 	}
 }
 
