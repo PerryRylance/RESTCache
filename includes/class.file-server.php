@@ -2,7 +2,9 @@
 
 namespace PerryRylance\WordPress\RESTCache;
 
-class FileServer
+require_once(__DIR__ . '/class.file-cache.php');
+
+class FileServer extends FileCache
 {
 	public function __construct()
 	{
@@ -15,39 +17,6 @@ class FileServer
 			$data[$i] = is_array($item) ? $this->array_map_recursive($function, $item) : $function($item);
 		
 		return $data;
-	}
-	
-	protected function getURI()
-	{
-		$uri	= $_SERVER['REQUEST_URI'];
-		
-		if(!empty($_GET))
-		{
-			$arr = array_merge(array(), $_GET);
-			
-			$this->array_map_recursive('stripslashes', $arr);
-			
-			$uri .= "?" . http_build_query($arr);
-		}
-		
-		return $uri;
-	}
-	
-	protected function getRecordFolder()
-	{
-		if(!defined('ABSPATH'))
-			$uploads_dir 	= '../../uploads';
-		else
-			$uploads_dir	= wp_upload_dir()['basedir'];
-		
-		$cache_dir			= "$uploads_dir/rest-cache";
-		
-		return $cache_dir;
-	}
-	
-	protected function getRecordFile($hash)
-	{
-		return $this->getRecordFolder() . "/$hash.json";
 	}
 	
 	public function isServingCurrentURI()
@@ -72,9 +41,14 @@ class FileServer
 		
 		// Send file
 		header("Content-type: application/json; charset=UTF-8");
-		header("X-Robots-Tag", "noindex");
-		header("X-Content-Type-Options", "nosniff");
+		header("X-Robots-Tag: noindex");
+		header("X-Content-Type-Options: nosniff");
+		header("X-Served-By: rest-cache");
+		
+		// TODO: Send expiry time
 		
 		readfile($file);
+		
+		exit;
 	}
 }
