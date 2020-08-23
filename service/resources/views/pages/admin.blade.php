@@ -51,12 +51,13 @@
 		</div>
 		
 		<div id="rules">
-			<div class="notice notice-info">
+			<!-- Removed from WP 5.5 - Callback should be __return_true for any public routes -->
+			<!-- <div class="notice notice-info">
 				<p>
 					<i class="fas fa-info-circle"></i>
 					<strong>Please note</strong> that this plugin will only cache GET requests. The plugin will not cache <em>any</em> requests which have a permission callback, for security reasons.
 				</p>
-			</div>
+			</div> -->
 		
 			<p id="rule-controls">
 				<button id="add-rule" class="button button-primary">
