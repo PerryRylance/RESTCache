@@ -54,3 +54,5 @@ Route::get('records', function (Request $request) {
 Route::resource('rules', 'RuleController')->only([
 	'index', 'store', 'update', 'destroy'
 ]);
+
+Route::get('cache', 'CacheController@get');
