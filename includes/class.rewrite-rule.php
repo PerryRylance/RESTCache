@@ -45,7 +45,7 @@ class RewriteRule
 		$shim		= "/" . trailingslashit($path) . "shim.php";
 		
 		// NB: Fix for Windows path \ making redirect rule ineffective
-		if(defined('PHP_OS') && if (strtoupper(substr(PHP_OS, 0, 3)) === 'WIN'))
+		if(defined('PHP_OS') && strtoupper(substr(PHP_OS, 0, 3)) === 'WIN')
 			$shim	= str_replace('\\', '/', $shim);
 		
 		$block		= "# BEGIN rest-cache-$guid
