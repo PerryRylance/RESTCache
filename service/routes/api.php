@@ -44,12 +44,9 @@ Route::get('install', function (Request $request) {
 	
 });
 
-Route::get('records', function (Request $request) {
-	
-	$table = new RecordsTable($request);
-	return $table->getRecords($request);
-	
-});
+Route::resource('records', 'RecordController')->only([
+	'index', 'store', 'update', 'destroy'
+]);
 
 Route::resource('rules', 'RuleController')->only([
 	'index', 'store', 'update', 'destroy'
