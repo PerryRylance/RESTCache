@@ -3,3 +3,15 @@ tr.rest-cache-editing button[data-action='edit'],
 {
 	display: none;
 }
+
+#records [data-field="uri"],
+	#records [data-field="filename"]
+{
+	font-family: monospace;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+	overflow: hidden;
+	max-width: 15vw;
+	direction: rtl;
+	text-align: left;
+}
