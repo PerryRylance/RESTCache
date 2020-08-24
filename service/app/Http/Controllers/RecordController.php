@@ -4,13 +4,13 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Tables\RecordsTable;
-use App\Models\Record;
+use App\Record;
 
-class RecordController extends Controller
+class RecordController extends TableController
 {
     protected function getModelClass()
 	{
-		return Record;
+		return "\\App\\Record";
 	}
 	
 	public function index(Request $request)

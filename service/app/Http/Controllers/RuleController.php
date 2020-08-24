@@ -4,13 +4,13 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Tables\RulesTable;
-use App\Models\Rule;
+use App\Rule;
 
 class RuleController extends TableController
 {
 	protected function getModelClass()
 	{
-		return "\\App\\Models\\Rule";
+		return "\\App\\Rule";
 	}
 	
 	public function index(Request $request)
