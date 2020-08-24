@@ -19,29 +19,30 @@ class RulesTable extends DataTable
 		$id_placeholder = RulesTable::ID_PLACEHOLDER;
 		
 		$columns = [
-			'id'			=> [
-				'display'	=> false,
-				'sql'		=> 'id'
-			],
-			'pattern'		=> [
-				'caption'	=> 'Pattern',
-				'type'		=> 'text',
-				'sql'		=> 'pattern'
-			],
-			'regex'			=> [
-				'caption'	=> 'Regex',
-				'type'		=> 'int',
-				'sql'		=> 'regex'
-			],
-			'priority'		=> [
-				'caption'	=> 'Priority',
-				'type'		=> 'int',
-				'sql'		=> 'priority'
-			],
-			'actions'		=> [
-				'caption'	=> 'Actions',
-				'type'		=> 'text',
-				'sql'		=> DB::raw('
+			'id'				=> [
+				'display'		=> false,
+				'sql'			=> 'id'
+			],	
+			'pattern'			=> [
+				'caption'		=> 'Pattern',
+				'type'			=> 'text',
+				'sql'			=> 'pattern'
+			],	
+			'regex'				=> [
+				'caption'		=> 'Regex',
+				'type'			=> 'int',
+				'sql'			=> 'regex'
+			],	
+			'priority'			=> [
+				'caption'		=> 'Priority',
+				'type'			=> 'int',
+				'sql'			=> 'priority'
+			],	
+			'actions'			=> [
+				'caption'		=> 'Actions',
+				'type'			=> 'text',
+				'searchable'	=> false,
+				'sql'			=> DB::raw('
 					REPLACE(CONCAT(\'
 							<div class="rest-cache-action-buttons">
 								<button class="button button-secondary"

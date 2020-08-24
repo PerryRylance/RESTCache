@@ -18,44 +18,45 @@ class RecordsTable extends DataTable
 		$id_placeholder = RecordsTable::ID_PLACEHOLDER;
 		
 		return [
-			'id'			=> [
-				'display'	=> false,
-				'sql'		=> 'id'
-			],
-			'uri'			=> [
-				'caption'	=> 'URI',
-				'type'		=> 'text',
-				'sql'		=> 'uri'
-			],
-			'filename'		=> [
-				'caption'	=> 'File',
-				'type'		=> 'text',
-				'sql'		=> 'filename'
-			],
-			'size'			=> [
-				'caption'	=> 'Size',
-				'type'		=> 'int',
-				'sql'		=> 'size'
-			],
-			'hits'			=> [
-				'caption'	=> 'Hits',
-				'type'		=> 'int',
-				'sql'		=> 'hits'
-			],
-			'created'		=> [
-				'caption'	=> 'Created',
-				'type'		=> 'datetime',
-				'sql'		=> 'created'
-			],
-			'expires'		=> [
-				'caption'	=> 'Expires',
-				'type'		=> 'datetime',
-				'sql'		=> 'expires'
-			],
-			'actions'		=> [
-				'caption'	=> 'Actions',
-				'type'		=> 'text',
-				'sql'		=> 
+			'id'				=> [
+				'display'		=> false,
+				'sql'			=> 'id'
+			],	
+			'uri'				=> [
+				'caption'		=> 'URI',
+				'type'			=> 'text',
+				'sql'			=> 'uri'
+			],	
+			'filename'			=> [
+				'caption'		=> 'File',
+				'type'			=> 'text',
+				'sql'			=> 'filename'
+			],	
+			'size'				=> [
+				'caption'		=> 'Size',
+				'type'			=> 'int',
+				'sql'			=> 'size'
+			],	
+			'hits'				=> [
+				'caption'		=> 'Hits',
+				'type'			=> 'int',
+				'sql'			=> 'hits'
+			],	
+			'created'			=> [
+				'caption'		=> 'Created',
+				'type'			=> 'datetime',
+				'sql'			=> 'created'
+			],	
+			'expires'			=> [
+				'caption'		=> 'Expires',
+				'type'			=> 'datetime',
+				'sql'			=> 'expires'
+			],	
+			'actions'			=> [
+				'caption'		=> 'Actions',
+				'type'			=> 'text',
+				'searchable'	=> false,
+				'sql'			=> 
 					'\'<div class="rest-cache-action-buttons">
 						<button class="button button-secondary"
 							title="Clear" 
