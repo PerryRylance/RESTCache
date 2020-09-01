@@ -33,6 +33,11 @@ class RulesTable extends DataTable
 				'type'			=> 'int',
 				'sql'			=> 'regex'
 			],	
+			'behaviour'			=> [
+				'caption'		=> 'Behaviour',
+				'type'			=> 'enum',
+				'sql'			=> 'behaviour'
+			],
 			'priority'			=> [
 				'caption'		=> 'Priority',
 				'type'			=> 'int',
@@ -59,6 +64,11 @@ class RulesTable extends DataTable
 									title="Remove" 
 									data-action="delete">
 									<i class="fas fa-trash-alt"></i>
+								</button>
+								<button class="button button-secondary"
+									title="Cancel"
+									data-action="cancel">
+									<i class="fas fa-ban"></i>
 								</button>
 							</div>
 						\'),

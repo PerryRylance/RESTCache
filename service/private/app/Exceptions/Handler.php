@@ -50,6 +50,14 @@ class Handler extends ExceptionHandler
      */
     public function render($request, Throwable $exception)
     {
+		// NB: This is not a very graceful place to handle this, and the manner it is handled in isn't ideal. Figure out how to make internal calls from WordPress without 404ing
+		if ($exception instanceof \Symfony\Component\HttpKernel\Exception\NotFoundHttpException && defined('REST_CACHE_INCREMENT_RECORD_HASH'))
+		{
+			\App\Record::where("hash", REST_CACHE_INCREMENT_RECORD_HASH)->increment("hits", 1);
+			
+			exit;
+		}
+
         return parent::render($request, $exception);
     }
 }
