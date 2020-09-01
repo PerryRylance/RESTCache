@@ -28,6 +28,11 @@ export default class Table
 		return $input;
 	}
 	
+	getRowData(id)
+	{
+		
+	}
+	
 	setItemEditable(id)
 	{
 		let self = this;
@@ -47,7 +52,16 @@ export default class Table
 
 			let $input = self.getControlFromField(field);
 			
-			$input.val($(td).text());
+			switch($input.attr("type"))
+			{
+				case "checkbox":
+					$input.prop("checked", $(td).text() == 1);
+					break;
+				
+				default:
+					$input.val($(td).text());
+					break;
+			}
 			
 			$(td).empty();
 			$(td).append($input);
@@ -72,10 +86,22 @@ export default class Table
 		
 		$tr.find(":input").each(function(index, el) {
 			
-			if(!$(el).attr("name"))
+			var name = $(el).attr("name");
+			
+			if(!name)
 				return;
 			
-			data[$(el).attr("name")] = $(el).val();
+			switch($(el).attr("type"))
+			{
+				case "checkbox":
+				case "radio":
+					data[name] = $(el).prop("checked") ? 1 : 0;
+					break;
+				
+				default:
+					data[name] = $(el).val();
+					break;
+			}
 			
 		});
 		
@@ -84,6 +110,13 @@ export default class Table
 			data: data,
 			success: function(response, status, xhr) {
 				self.onActionComplete(response);
+			},
+			error: function(xhr, status, error) {
+				if(xhr.status == 422)
+				{
+					var json = JSON.parse(xhr.responseText);
+					self.onError(xhr.status, json);
+				}
 			}
 		});
 	}
@@ -104,5 +137,13 @@ export default class Table
 	onActionComplete(event)
 	{
 		this.$element.DataTable().ajax.reload();
+	}
+	
+	onError(code, json)
+	{
+		for(var key in json.errors)
+		{
+			alert(json.errors[key]);
+		}
 	}
 }

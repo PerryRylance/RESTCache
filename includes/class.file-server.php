@@ -6,9 +6,14 @@ require_once(__DIR__ . '/class.file-cache.php');
 
 class FileServer extends FileCache
 {
+	private $rules;
+	
 	public function __construct()
 	{
+		$file = dirname(__DIR__) . '/service/public/rules.json';
 		
+		if(file_exists($file))
+			$this->rules = json_decode( file_get_contents($file) );
 	}
 	
 	protected function array_map_recursive($function, &$data)
@@ -28,7 +33,23 @@ class FileServer extends FileCache
 		if(!is_file($file))
 			return false;
 		
-		// TODO: Rest if URI is allowed
+		$allowed = true;
+		
+		foreach($this->rules as $obj)
+		{
+			if($obj->regex)
+				$uriMatchesPattern = preg_match("@{$obj->pattern}@", $uri);
+			else
+				$uriMatchesPattern = stripos($uri, $obj->pattern) !== false;
+			
+			if($obj->behaviour == "exclude" && $uriMatchesPattern)
+				$allowed = false;
+			else if($obj->behaviour == "include" && $uriMatchesPattern)
+				$allowed = true;
+		}
+		
+		if(!$allowed)
+			return false;
 		
 		return true;
 	}
@@ -47,7 +68,22 @@ class FileServer extends FileCache
 		
 		// TODO: Send expiry time
 		
+		// NB: Taken from https://stackoverflow.com/questions/138374/how-do-i-close-a-connection-early with gratitude
+		ob_end_clean();
+		header("Connection: close");
+		ignore_user_abort(true); // just to be safe
+		ob_start();
+		
 		readfile($file);
+		
+		$size = ob_get_length();
+		header("Content-Length: $size");
+		
+		ob_end_flush(); // Strange behaviour, will not work
+		flush(); // Unless both are called !
+		
+		define("REST_CACHE_INCREMENT_RECORD_HASH", $hash);
+		include(dirname(__DIR__) . "/service/public/index.php");
 		
 		exit;
 	}

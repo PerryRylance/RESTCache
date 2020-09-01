@@ -5,6 +5,8 @@ export default class RulesTable extends Table
 	constructor(element)
 	{
 		super(element);
+		
+		this.$element.on("click", "[data-action='cancel']", event => this.onCancel(event));
 	}
 	
 	getControlFromField(field)
@@ -14,11 +16,7 @@ export default class RulesTable extends Table
 			case "regex":
 			
 				var $input = super.getControlFromField(field);
-				
 				$input.attr("type", "checkbox");
-				$input.attr("checked", $input.val() == 1);
-				$input.val("on");
-				
 				return $input;
 				
 				break;
@@ -46,5 +44,10 @@ export default class RulesTable extends Table
 		}
 		
 		return super.getControlFromField(field);
+	}
+	
+	onCancel(event)
+	{
+		this.$element.DataTable().ajax.reload();
 	}
 }

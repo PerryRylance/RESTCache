@@ -43,6 +43,10 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
 
 function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
@@ -62,11 +66,42 @@ var RecordsTable = /*#__PURE__*/function (_Table) {
 
   var _super = _createSuper(RecordsTable);
 
-  function RecordsTable() {
+  function RecordsTable(element) {
+    var _this;
+
     _classCallCheck(this, RecordsTable);
 
-    return _super.apply(this, arguments);
+    _this = _super.call(this, element);
+    $("#rest-cache-admin #refresh-table").on("click", function (event) {
+      return _this.onRefreshTable(event);
+    });
+    $("#rest-cache-admin #clear-cache").on("click", function (event) {
+      return _this.onClearCache(event);
+    });
+    return _this;
   }
+
+  _createClass(RecordsTable, [{
+    key: "onRefreshTable",
+    value: function onRefreshTable(event) {
+      $("#rest-cache-admin #records .dataTable").DataTable().ajax.reload();
+    }
+  }, {
+    key: "onClearCache",
+    value: function onClearCache(event) {
+      $.ajax(this.url, {
+        method: "DELETE",
+        success: function success(response, status, xhr) {
+          self.onActionComplete(response);
+        }
+      });
+    }
+  }, {
+    key: "onActionComplete",
+    value: function onActionComplete(event) {
+      this.$element.DataTable().ajax.reload();
+    }
+  }]);
 
   return RecordsTable;
 }(_Table2["default"]);
@@ -117,9 +152,17 @@ var RulesTable = /*#__PURE__*/function (_Table) {
   var _super = _createSuper(RulesTable);
 
   function RulesTable(element) {
+    var _this;
+
     _classCallCheck(this, RulesTable);
 
-    return _super.call(this, element);
+    _this = _super.call(this, element);
+
+    _this.$element.on("click", "[data-action='cancel']", function (event) {
+      return _this.onCancel(event);
+    });
+
+    return _this;
   }
 
   _createClass(RulesTable, [{
@@ -130,8 +173,6 @@ var RulesTable = /*#__PURE__*/function (_Table) {
           var $input = _get(_getPrototypeOf(RulesTable.prototype), "getControlFromField", this).call(this, field);
 
           $input.attr("type", "checkbox");
-          $input.attr("checked", $input.val() == 1);
-          $input.val("on");
           return $input;
           break;
 
@@ -152,6 +193,11 @@ var RulesTable = /*#__PURE__*/function (_Table) {
       }
 
       return _get(_getPrototypeOf(RulesTable.prototype), "getControlFromField", this).call(this, field);
+    }
+  }, {
+    key: "onCancel",
+    value: function onCancel(event) {
+      this.$element.DataTable().ajax.reload();
     }
   }]);
 
@@ -209,6 +255,9 @@ var Table = /*#__PURE__*/function () {
       return $input;
     }
   }, {
+    key: "getRowData",
+    value: function getRowData(id) {}
+  }, {
     key: "setItemEditable",
     value: function setItemEditable(id) {
       var self = this;
@@ -224,7 +273,17 @@ var Table = /*#__PURE__*/function () {
         }
 
         var $input = self.getControlFromField(field);
-        $input.val($(td).text());
+
+        switch ($input.attr("type")) {
+          case "checkbox":
+            $input.prop("checked", $(td).text() == 1);
+            break;
+
+          default:
+            $input.val($(td).text());
+            break;
+        }
+
         $(td).empty();
         $(td).append($input);
       });
@@ -244,14 +303,31 @@ var Table = /*#__PURE__*/function () {
       var data = {};
       var $tr = $(event.currentTarget).closest("tr");
       $tr.find(":input").each(function (index, el) {
-        if (!$(el).attr("name")) return;
-        data[$(el).attr("name")] = $(el).val();
+        var name = $(el).attr("name");
+        if (!name) return;
+
+        switch ($(el).attr("type")) {
+          case "checkbox":
+          case "radio":
+            data[name] = $(el).prop("checked") ? 1 : 0;
+            break;
+
+          default:
+            data[name] = $(el).val();
+            break;
+        }
       });
       $.ajax(this.url + "/" + id, {
         method: "PUT",
         data: data,
         success: function success(response, status, xhr) {
           self.onActionComplete(response);
+        },
+        error: function error(xhr, status, _error) {
+          if (xhr.status == 422) {
+            var json = JSON.parse(xhr.responseText);
+            self.onError(xhr.status, json);
+          }
         }
       });
     }
@@ -271,6 +347,13 @@ var Table = /*#__PURE__*/function () {
     key: "onActionComplete",
     value: function onActionComplete(event) {
       this.$element.DataTable().ajax.reload();
+    }
+  }, {
+    key: "onError",
+    value: function onError(code, json) {
+      for (var key in json.errors) {
+        alert(json.errors[key]);
+      }
     }
   }]);
 

@@ -18,4 +18,10 @@ class RecordController extends TableController
 		$table = new RecordsTable($request);
 		return $table->getRecords($request);
 	}
+	
+	public function destroyAll(Request $request)
+	{
+		Record::truncate();
+		return ["success" => true];
+	}
 }

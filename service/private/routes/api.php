@@ -48,6 +48,8 @@ Route::resource('records', 'RecordController')->only([
 	'index', 'store', 'update', 'destroy'
 ]);
 
+Route::delete('records', 'RecordController@destroyAll');
+
 Route::resource('rules', 'RuleController')->only([
 	'index', 'store', 'update', 'destroy'
 ]);
