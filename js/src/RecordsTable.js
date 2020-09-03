@@ -17,6 +17,8 @@ export default class RecordsTable extends Table
 	
 	onClearCache(event)
 	{
+		var self = this;
+		
 		$.ajax(this.url, {
 			method: "DELETE",
 			success: function(response, status, xhr) {

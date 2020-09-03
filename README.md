@@ -5,3 +5,6 @@ A very fast REST cache for WordPress, powered by Laravel. This project is more o
 Install through the WordPress plugins menu (when this plugin becomes available there).
 
 Alternatively download the ZIP from this repo (or clone into your plugins folder) and then activate the plugin.
+
+## Development
+In order to work on the plugins JavaScript, you'll need to run `npm install`, and run `gulp` in order to watch for changes to the plugins source files.

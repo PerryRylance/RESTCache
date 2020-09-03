@@ -82,7 +82,7 @@ class FileServer extends FileCache
 		ob_end_flush(); // Strange behaviour, will not work
 		flush(); // Unless both are called !
 		
-		define("REST_CACHE_INCREMENT_RECORD_HASH", $hash);
+		define("REST_CACHE_HIT_RECORD_HASH", $hash);
 		include(dirname(__DIR__) . "/service/public/index.php");
 		
 		exit;

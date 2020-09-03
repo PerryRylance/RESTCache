@@ -17,11 +17,14 @@ const paths = {
 };
 
 function js() {
-    // set up the browserify instance on a task basis
     var b = browserify({
 		entries: './js/src/entry.js',
 		debug: true
-	}).transform(babelify, { presets : [ '@babel/preset-env' ] });  // Then, babelify, with ES2015 preset;
+	}).transform(babelify, {
+		global: true, 
+        ignore: [/\/node_modules\/(?!@perry-rylance\/)/],
+		presets : [ '@babel/preset-env' ] 
+	});
 	
 	del("./js/dist/**/*");
 

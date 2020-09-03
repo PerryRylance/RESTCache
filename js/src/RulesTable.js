@@ -7,6 +7,8 @@ export default class RulesTable extends Table
 		super(element);
 		
 		this.$element.on("click", "[data-action='cancel']", event => this.onCancel(event));
+		
+		$("button#add-rule").on("click", (event) => this.onAddRule(event));
 	}
 	
 	getControlFromField(field)
@@ -49,5 +51,17 @@ export default class RulesTable extends Table
 	onCancel(event)
 	{
 		this.$element.DataTable().ajax.reload();
+	}
+	
+	onAddRule(event)
+	{
+		var self = this;
+		
+		$.ajax(this.url, {
+			method: "POST",
+			success: function(response, status, xhr) {
+				self.$element.DataTable().ajax.reload();
+			}
+		});
 	}
 }

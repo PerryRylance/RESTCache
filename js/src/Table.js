@@ -1,8 +1,10 @@
-export default class Table
+import DataTable from "@perry-rylance/data-table";
+
+export default class Table extends DataTable
 {
 	constructor(element)
 	{
-		var self = this;
+		super(element);
 		
 		this.$element = $(element);
 		
@@ -26,11 +28,6 @@ export default class Table
 		let $input = $("<input/>");
 		$input.attr("name", field);
 		return $input;
-	}
-	
-	getRowData(id)
-	{
-		
 	}
 	
 	setItemEditable(id)
