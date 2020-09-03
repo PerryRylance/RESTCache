@@ -89,6 +89,7 @@ var RecordsTable = /*#__PURE__*/function (_Table) {
   }, {
     key: "onClearCache",
     value: function onClearCache(event) {
+      var self = this;
       $.ajax(this.url, {
         method: "DELETE",
         success: function success(response, status, xhr) {
@@ -162,6 +163,9 @@ var RulesTable = /*#__PURE__*/function (_Table) {
       return _this.onCancel(event);
     });
 
+    $("button#add-rule").on("click", function (event) {
+      return _this.onAddRule(event);
+    });
     return _this;
   }
 
@@ -199,6 +203,17 @@ var RulesTable = /*#__PURE__*/function (_Table) {
     value: function onCancel(event) {
       this.$element.DataTable().ajax.reload();
     }
+  }, {
+    key: "onAddRule",
+    value: function onAddRule(event) {
+      var self = this;
+      $.ajax(this.url, {
+        method: "POST",
+        success: function success(response, status, xhr) {
+          self.$element.DataTable().ajax.reload();
+        }
+      });
+    }
   }]);
 
   return RulesTable;
@@ -214,30 +229,59 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports["default"] = void 0;
 
+var _dataTable = _interopRequireDefault(require("@perry-rylance/data-table"));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
+
+function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
 
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
-var Table = /*#__PURE__*/function () {
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
+
+function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
+
+function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = _getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
+
+function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
+
+function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
+function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Date.prototype.toString.call(Reflect.construct(Date, [], function () {})); return true; } catch (e) { return false; } }
+
+function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
+
+var Table = /*#__PURE__*/function (_DataTable) {
+  _inherits(Table, _DataTable);
+
+  var _super = _createSuper(Table);
+
   function Table(element) {
-    var _this = this;
+    var _this;
 
     _classCallCheck(this, Table);
 
-    var self = this;
-    this.$element = $(element);
-    this.url = this.$element.attr("data-route");
-    this.$element.on("click", "[data-action='edit']", function (event) {
+    _this = _super.call(this, element);
+    _this.$element = $(element);
+    _this.url = _this.$element.attr("data-route");
+
+    _this.$element.on("click", "[data-action='edit']", function (event) {
       return _this.onEdit(event);
     });
-    this.$element.on("click", "[data-action='update']", function (event) {
+
+    _this.$element.on("click", "[data-action='update']", function (event) {
       return _this.onUpdate(event);
     });
-    this.$element.on("click", "[data-action='delete']", function (event) {
+
+    _this.$element.on("click", "[data-action='delete']", function (event) {
       return _this.onDelete(event);
     });
+
+    return _this;
   }
 
   _createClass(Table, [{
@@ -254,9 +298,6 @@ var Table = /*#__PURE__*/function () {
       $input.attr("name", field);
       return $input;
     }
-  }, {
-    key: "getRowData",
-    value: function getRowData(id) {}
   }, {
     key: "setItemEditable",
     value: function setItemEditable(id) {
@@ -358,15 +399,91 @@ var Table = /*#__PURE__*/function () {
   }]);
 
   return Table;
-}();
+}(_dataTable["default"]);
 
 exports["default"] = Table;
 
-},{}],5:[function(require,module,exports){
+},{"@perry-rylance/data-table":6}],5:[function(require,module,exports){
 "use strict";
 
 require('./Admin');
 
-},{"./Admin":1}]},{},[5])
+},{"./Admin":1}],6:[function(require,module,exports){
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports["default"] = void 0;
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+var DataTable = /*#__PURE__*/function () {
+  function DataTable(element) {
+    _classCallCheck(this, DataTable);
+
+    if ($.fn.dataTable.ext) $.fn.dataTable.ext.errMode = "throw";
+    this.$element = $(element);
+    var options = this.getDataTableOptions();
+    this.$element.DataTable(options);
+  }
+
+  _createClass(DataTable, [{
+    key: "getDataTableOptions",
+    value: function getDataTableOptions() {
+      var fields = this.getColumnFields();
+      var columns = [];
+      fields.forEach(function (field) {
+        columns.push({
+          "data": field
+        });
+      });
+      return {
+        "ajax": this.$element.attr("data-route"),
+        "processing": true,
+        "serverSide": true,
+        "columns": columns,
+        "createdRow": function createdRow(row, data, index) {
+          if (!("id" in data)) console.warn("No ID in row data");else $(row).attr("data-id", data.id);
+          var index = 0;
+          $(row).children("td").each(function (index, td) {
+            $(td).attr("data-field", fields[index]);
+            index++;
+          });
+        }
+      };
+    }
+  }, {
+    key: "getColumnFields",
+    value: function getColumnFields() {
+      var results = [];
+      this.$element.find("th[data-column-field]").each(function () {
+        results.push($(this).attr("data-column-field"));
+      });
+      return results;
+    }
+  }]);
+
+  return DataTable;
+}();
+
+exports["default"] = DataTable;
+
+DataTable.createInstance = function (element) {
+  return new DataTable(element);
+};
+
+$(window).on("load", function (event) {
+  $("table.perry-rylance-datatable").each(function (index, el) {
+    if ($(el).attr("data-auto-initialize") == "false") return;
+    el.dataTable = DataTable.createInstance(el);
+  });
+});
+
+},{}]},{},[5])
 
 });//# sourceMappingURL=entry.js.map

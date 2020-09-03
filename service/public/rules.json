@@ -1,1 +1,1 @@
-[{"id":1,"behaviour":"include","pattern":"\/wp-json","regex":1,"priority":10},{"id":7,"behaviour":"exclude","pattern":"\/","regex":0,"priority":10}]
+[{"id":1,"behaviour":"include","pattern":"\/wp-json","regex":1,"priority":10},{"id":10,"behaviour":"exclude","pattern":"\/test","regex":0,"priority":10}]

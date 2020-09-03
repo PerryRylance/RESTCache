@@ -48,6 +48,8 @@ class FileStorer extends FileCache
 	
 	public function store(\WP_REST_Response $result)
 	{
+		global $wpdb;
+		
 		$uri		= $this->getURI();
 		
 		// TODO: Check URI is allowed by rules
@@ -57,14 +59,12 @@ class FileStorer extends FileCache
 		$hash		= md5($uri);
 		$file		= $this->getRecordFile($hash);
 		
-		file_put_contents($file, $output);
-		
 		// TODO: Store record in the database (via Laravel?)
 		
 		// NB: Temporary code
 		global $wpdb;
 		
-		$stmt	= $wpdb->prepare("INSERT INTO rest_cache_records 
+		$stmt	= $wpdb->prepare("INSERT INTO {$wpdb->prefix}rest_cache_records 
 			(uri, hash, filename, size, created, expires)
 			VALUES 
 			(%s, %s, %s, %d, NOW(), DATE_ADD(NOW(), INTERVAL " . $this->getExpiryInterval() . "))
@@ -72,11 +72,13 @@ class FileStorer extends FileCache
 			$uri,
 			$hash,
 			$file,
-			filesize($file)
+			strlen($output)
 		));
 			
 		if(!$wpdb->query($stmt))
 			throw new \Exception('Failed to store record');
+		
+		file_put_contents($file, $output);
 	}
 	
 	public function onCreateDirectoryNotice()

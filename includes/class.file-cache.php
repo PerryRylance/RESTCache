@@ -20,7 +20,7 @@ class FileCache
 		return $uri;
 	}
 	
-	protected function getRecordFolder()
+	public function getRecordFolder()
 	{
 		if(!defined('ABSPATH'))
 			$uploads_dir 	= '../../uploads';
@@ -42,13 +42,14 @@ class FileCache
 	
 	protected function getExpiryInterval()
 	{
-		// TODO: Implement
-		return "1 DAY";
-	}
-	
-	public function isURIAllowed($uri)
-	{
-		// TODO: Implement
-		return true;
+		global $restCachePlugin;
+		
+		$amount		= $restCachePlugin->settings->{"record-expiry-interval-amount"};
+		$type		= $restCachePlugin->settings->{"record-expiry-interval-type"};
+		
+		if(empty($amount) || empty($type))
+			return "1 DAY";
+		
+		return "$amount $type";
 	}
 }
