@@ -7,6 +7,21 @@
  * @author   Taylor Otwell <taylor@laravel.com>
  */
 
+if(defined('LARAVEL_START'))
+{
+	// NB: Laravel is only run inside the WordPress environment on the plugins admin page.
+	// If this becomes problematic, in terms of other plugins having loaded Laravel it may be necessary to use an AJAX interface to facilitate this. Display an error message and bail gracefully.
+	?>
+	<div class='notice notice-error'>
+		<p>
+			There was a problem initializing the service.
+		</p>
+	</div>
+	<?php
+	
+	return;
+}
+
 define('LARAVEL_START', microtime(true));
 
 /*

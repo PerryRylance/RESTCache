@@ -16,13 +16,7 @@ class FileServer extends FileCache
 			$this->rules = json_decode( file_get_contents($file) );
 	}
 	
-	protected function array_map_recursive($function, &$data)
-	{
-		foreach ($data as $i => $item)
-			$data[$i] = is_array($item) ? $this->array_map_recursive($function, $item) : $function($item);
-		
-		return $data;
-	}
+	
 	
 	public function isServingCurrentURI()
 	{

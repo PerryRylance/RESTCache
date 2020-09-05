@@ -67,6 +67,11 @@ class Plugin extends Base
 		return isset($_GET['page']) && $_GET['page'] == 'rest-cache';
 	}
 	
+	public static function sanitizeAuthKey($key)
+	{
+		return preg_replace("/[^0-9A-F]/i", "", $key);
+	}
+	
 	public function onActivate()
 	{
 		Parent::onActivate();
@@ -79,8 +84,11 @@ class Plugin extends Base
 			'timeout' => 30
 		]);
 		
+		// NB: Sanitize cookie by removing any non-hex characters, as per WordPress.org plugin teams request
+		$key	= Plugin::sanitizeAuthKey($_COOKIE["rest-cache-admin-key"]);
+		
 		$jar	= CookieJar::fromArray([
-			'rest-cache-admin-key' => $_COOKIE["rest-cache-admin-key"]
+			'rest-cache-admin-key' => $key
 		], $_SERVER['SERVER_NAME']);
 		
 		$response = $client->request('GET', $url, ['cookies' => $jar]);
@@ -153,7 +161,9 @@ class Plugin extends Base
 		);
 		
 		setcookie("rest-cache-admin-key", $key, time() + 60 * 60 * 24, "/");
-		$_COOKIE["rest-cache-admin-key"] = $key;
+		
+		// NB: Sanitize cookie by removing any non-hex characters, as per WordPress.org plugin teams request
+		$_COOKIE["rest-cache-admin-key"] = Plugin::sanitizeAuthKey($key);
 	}
 	
 	// NB: Quick and dirty - this should be done in Laravel, but the release is overdue. Consider refactoring this.
