@@ -8,50 +8,21 @@ class FileServer extends FileCache
 {
 	private $rules;
 	
-	public function __construct()
+	protected function isURIAllowed($uri)
 	{
-		$file = dirname(__DIR__) . '/service/public/rules.json';
+		if(!FileCache::isURIAllowed($uri))
+			return false;
 		
-		if(file_exists($file))
-			$this->rules = json_decode( file_get_contents($file) );
-	}
-	
-	protected function array_map_recursive($function, &$data)
-	{
-		foreach ($data as $i => $item)
-			$data[$i] = is_array($item) ? $this->array_map_recursive($function, $item) : $function($item);
+		$hash	= md5($uri);
+		$file	= $this->getRecordFile($hash);
 		
-		return $data;
+		return is_file($file);
 	}
 	
 	public function isServingCurrentURI()
 	{
-		$uri	= $this->getURI();
-		$hash	= md5($uri);
-		$file	= $this->getRecordFile($hash);
-		
-		if(!is_file($file))
-			return false;
-		
-		$allowed = true;
-		
-		foreach($this->rules as $obj)
-		{
-			if($obj->regex)
-				$uriMatchesPattern = preg_match("@{$obj->pattern}@", $uri);
-			else
-				$uriMatchesPattern = stripos($uri, $obj->pattern) !== false;
-			
-			if($obj->behaviour == "exclude" && $uriMatchesPattern)
-				$allowed = false;
-			else if($obj->behaviour == "include" && $uriMatchesPattern)
-				$allowed = true;
-		}
-		
-		if(!$allowed)
-			return false;
-		
-		return true;
+		$uri = $this->getURI();
+		return $this->isURIAllowed($uri);
 	}
 	
 	public function serve()

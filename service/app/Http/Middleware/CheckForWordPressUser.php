@@ -38,7 +38,8 @@ class CheckForWordPressUser
 		if(!isset($_COOKIE['rest-cache-admin-key']))
 			throw new \Exception("No key provided");
 		
-		$key		= $_COOKIE['rest-cache-admin-key'];
+		// NB: Even though prepared statements are used below, the WordPress.org plugin team has requested sanitization here. This code strips any non-hex characters, so $key can be considered totally safe.
+		$key		= preg_replace("/[^0-9A-F]/i", "", $_COOKIE['rest-cache-admin-key']);
 		
 		$result		= DB::table("usermeta")
 			->select(["user_id"])
