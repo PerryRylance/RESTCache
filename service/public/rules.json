@@ -1,1 +1,1 @@
-[{"id":1,"behaviour":"exclude","pattern":"\/wp-json\/wpgmza","regex":0,"priority":10}]
+[{"id":2,"behaviour":"exclude","pattern":"\/","regex":0,"priority":10}]

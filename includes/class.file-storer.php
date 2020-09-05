@@ -10,6 +10,8 @@ class FileStorer extends FileCache
 	
 	public function __construct()
 	{
+		FileCache::__construct();
+		
 		$this->createStorageDirectory();
 	}
 	
@@ -32,6 +34,9 @@ class FileStorer extends FileCache
 			
 		// TODO: Figure out why this is even necessary, .htaccess should catch this
 		if(!preg_match('/GET/i', $request->get_method()))
+			return false;
+		
+		if(!$this->isURIAllowed($this->getURI()))
 			return false;
 		
 		$attributes = $request->get_attributes();

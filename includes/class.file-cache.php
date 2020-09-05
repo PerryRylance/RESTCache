@@ -4,6 +4,16 @@ namespace PerryRylance\WordPress\RESTCache;
 
 class FileCache
 {
+	private $rules;
+	
+	public function __construct()
+	{
+		$file = dirname(__DIR__) . '/service/public/rules.json';
+		
+		if(file_exists($file))
+			$this->rules = json_decode( file_get_contents($file) );
+	}
+	
 	protected function array_map_recursive($function, &$data)
 	{
 		foreach ($data as $i => $item)
@@ -70,5 +80,34 @@ class FileCache
 			return "1 DAY";
 		
 		return "$amount $type";
+	}
+	
+	protected function isURIAllowed($uri)
+	{
+		$hash	= md5($uri);
+		$file	= $this->getRecordFile($hash);
+		
+		if(!is_file($file))
+			return false;
+		
+		$allowed = true;
+		
+		foreach($this->rules as $obj)
+		{
+			if($obj->regex)
+				$uriMatchesPattern = preg_match("@{$obj->pattern}@", $uri);
+			else
+				$uriMatchesPattern = stripos($uri, $obj->pattern) !== false;
+			
+			if($obj->behaviour == "exclude" && $uriMatchesPattern)
+				$allowed = false;
+			else if($obj->behaviour == "include" && $uriMatchesPattern)
+				$allowed = true;
+		}
+		
+		if(!$allowed)
+			return false;
+		
+		return true;
 	}
 }
