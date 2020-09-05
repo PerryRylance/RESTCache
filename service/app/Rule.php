@@ -13,11 +13,15 @@ class Rule extends Model
 	public function __construct(array $attributes = [])
 	{
 		$this->saved(function() {
-			Rule::onSaved();
+			Rule::onRulesFileInvalidated();
+		});
+		
+		$this->deleted(function() {
+			Rule::onRulesFileInvalidated();
 		});
 	}
 	
-	public static function onSaved()
+	public static function onRulesFileInvalidated()
 	{
 		$rules	= Rule::all()->sortBy("priority");
 		$file	= public_path() . '/rules.json';

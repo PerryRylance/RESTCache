@@ -84,12 +84,6 @@ class FileCache
 	
 	protected function isURIAllowed($uri)
 	{
-		$hash	= md5($uri);
-		$file	= $this->getRecordFile($hash);
-		
-		if(!is_file($file))
-			return false;
-		
 		$allowed = true;
 		
 		foreach($this->rules as $obj)

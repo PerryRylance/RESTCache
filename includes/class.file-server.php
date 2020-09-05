@@ -8,6 +8,17 @@ class FileServer extends FileCache
 {
 	private $rules;
 	
+	protected function isURIAllowed($uri)
+	{
+		if(!FileCache::isURIAllowed($uri))
+			return false;
+		
+		$hash	= md5($uri);
+		$file	= $this->getRecordFile($hash);
+		
+		return is_file($file);
+	}
+	
 	public function isServingCurrentURI()
 	{
 		$uri = $this->getURI();
